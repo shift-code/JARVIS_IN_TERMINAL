@@ -1,11 +1,5 @@
-#include <iostream>
-#include <string>
-#include <cstdlib>
-#include <cctype>
-#include "httplib.h"
-#include "nlohmann/json.hpp"
+#include "headers/jarvis.hpp"
 
-using json = nlohmann::json;
 
 std::string toLowerText(std::string s){
 for(char& c : s){
@@ -14,24 +8,6 @@ for(char& c : s){
 return s;
 }
 
-void speak(const std::string& text){
-    std::string safeText = text;
-    for (char& c : safeText) {
-        if (c == '"' || c == '\n' || c == '\r') c = ' ';
-    }
-
-    std::string cmd =
-        "echo \"" + safeText + "\" | "
-        "piper --model \"$HOME/piper-voices/en_US-lessac-medium.onnx\" "
-        "--output_file /tmp/jarvis.wav 2>/dev/null && "
-        "WIN_PATH=\"$(wslpath -w /tmp/jarvis.wav)\" && "
-        "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe "
-        "-NoProfile -NonInteractive -WindowStyle Hidden "
-        "-Command \"(New-Object Media.SoundPlayer '$WIN_PATH').PlaySync()\" "
-        ">/dev/null 2>&1";
-
-    std::system(cmd.c_str());
-}
 
 std::string askOllama(const std::string& prompt){
 	httplib::Client cli("http://localhost:11434");
@@ -44,6 +20,8 @@ std::string askOllama(const std::string& prompt){
             "[CMD:youtube] - to open YouTube\n"
             "[CMD:terminal] - to open terminal\n"
             "[CMD:files] - to open file manager\n"
+	    "[CMD:notepad] - to open notepad\n"
+	    "[CMD:calculator] - to open calculator\b"
             "For normal questions, just answer normally in short text.";
 
 	json rec_body = {
@@ -96,6 +74,18 @@ bool openingApp(const std::string& aiReply) {
         speak("Opening google");
         openInWindows("https://www.google.com");
         return true;
+    }
+    if(low == "notepad" || low == "open notepad" || low.find("cmd:notepad") != std::string::npos){
+    	std::cout<<"Jarvis: Opening Notepad...\n";
+	speak("Opening Notepad");
+	openInWindows("notepad.exe");
+	return true;
+    }
+    if(low == "calc" || low == "calculator" || low == "open calculator" || low.find("cmd:calculator") == std::string::npos){
+    	std::cout<<"Jarvis: Opening calculator...\n";
+	speak("Opening calculator");
+	openInWindows("calc.exe");
+	return true;
     }
     return false;
 }
