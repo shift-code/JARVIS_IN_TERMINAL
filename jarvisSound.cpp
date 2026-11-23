@@ -1,4 +1,3 @@
-#include <iostream>
 #include "headers/jarvisSound.hpp"
 
 void speak(const std::string& text){
