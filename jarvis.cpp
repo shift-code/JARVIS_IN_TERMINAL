@@ -10,15 +10,23 @@ return s;
 
 
 int main(){
-std::cout<<"===== JARVIS IS ACTIVATED =====\n";
-std::cout<<"Hello I am Jarvis,ask me anything...\n";
-speak("Hello I am Jarvis,ask me anything");
+#ifdef _WIN32
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+#endif
 
-std::string input;
+std::cout<<"===== JARVIS IS ACTIVATED =====\n";
+std::cout<<"Hello I am Jarvis,I am listening...\n";
+speak("Hello I am Jarvis,I am listening");
 
 while(1){
-	std::cout<<">Write something(exit for end): ";
-	std::getline(std::cin,input);
+	std::string input = listenForVoiceInput();
+	if(input.empty()){
+		continue;
+	}
+
+	std::cout<<">You: ";
+
 	std::string low = toLowerText(input);
 	if(low.empty()){
 		continue;
