@@ -5,6 +5,7 @@ json askAI(const std::string& prompt){
 
     std::string sys =
     	"You are Jarvis, your creator is Vahe. Always reply ONLY in JSON format:\n"
+	"- Always reply in the same language the user speaks, but keep 'type' and JSON keys in English.\n"
     	"{\"type\": \"chat or open or list_files or write_file or read_file or delete_file\", "
     	"\"target\": \"app name, url, directory, or file name\", "
     	"\"content\": \"text to write into file (only for write_file, otherwise empty)\", "
@@ -21,7 +22,7 @@ json askAI(const std::string& prompt){
 	json body{
 		{"system",sys},
 		{"prompt",prompt},
-		{"model","llama3"},
+		{"model","qwen2.5:7b"},
 		{"format","json"},
 		{"stream",false}	
 	};

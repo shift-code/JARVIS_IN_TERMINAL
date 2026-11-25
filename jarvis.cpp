@@ -8,6 +8,34 @@ for(char& c : s){
 return s;
 }
 
+std::string normalizeText(const std::string& s){
+	std::string tmp;
+	for(unsigned char c : s){
+		if(std::isalnum(c)) tmp += static_cast<char>(std::tolower(c));
+		else tmp += ' ';
+	}
+	std::istringstream iss(tmp);
+	std::string word, out;
+	while(iss >> word){
+		if(!out.empty()) out += ' ';
+		out += word;
+	}
+	return out;
+}
+
+bool isExitCommand(const std::string& norm){
+	std::istringstream iss(norm);
+	std::string w;
+	int count = 0;
+	bool hit = false;
+	while(iss >> w){
+		count++;
+		if(w == "exit" || w == "quit" || w == "stop" || w == "goodbye") hit = true;
+	}
+	return hit && count <= 3;   // короткая команда, а не "stop the music and..."
+}
+
+
 
 int main(){
 #ifdef _WIN32
@@ -25,14 +53,15 @@ while(1){
 		continue;
 	}
 
-	std::cout<<">You: ";
+	std::cout<<">You: "<<input<<std::endl;
 
-	std::string low = toLowerText(input);
-	if(low.empty()){
+	std::string norm = normalizeText(input);
+	if(norm.empty()){
 		continue;
 	}
 
-	if(low == "exit" || low == "stop"){
+
+	if(isExitCommand(norm)){
 		std::cout<<">End!!"<<std::endl;
 		speak("Jarvis is end his work,goodbye");
 		break;
@@ -40,7 +69,7 @@ while(1){
 
 
 	std::cout<<">Thinking..."<<std::endl;
-	json ans = askAI(low);
+	json ans = askAI(input);
 
 	std::string type = ans.value("type","chat");
 	std::string target = ans.value("target","");
