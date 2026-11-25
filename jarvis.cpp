@@ -37,6 +37,7 @@ while(1){
 	std::string type = ans.value("type","chat");
 	std::string target = ans.value("target","");
 	std::string reply = ans.value("reply","");
+	std::string content = ans.value("content","");
 
 	if(!reply.empty()){
 		std::cout<<">Jarvis: "<<reply<<std::endl;
@@ -45,6 +46,19 @@ while(1){
 
 	if(type == "open" && !target.empty()){
 		openInWindows(target);
+	}
+	else if(type == "list_files"){
+		std::string dir = target.empty() ? "." : target;
+		listFiles(dir);
+	}
+	else if(type == "write_file" && !target.empty()){
+		writeFile(target,content);
+	}
+	else if(type == "read_file" && !target.empty()){
+		readFile(target);
+	}
+	else if(type == "delete_file" && !target.empty()){
+		deleteFile(target);
 	}
 
 }
