@@ -22,7 +22,7 @@ json askAI(const std::string& prompt){
 	json body{
 		{"system",sys},
 		{"prompt",prompt},
-		{"model","qwen2.5:7b"},
+		{"model","qwen3-vl:4b-instruct"},
 		{"format","json"},
 		{"stream",false}	
 	};

@@ -32,7 +32,7 @@ bool isExitCommand(const std::string& norm){
 		count++;
 		if(w == "exit" || w == "quit" || w == "stop" || w == "goodbye") hit = true;
 	}
-	return hit && count <= 3;   // короткая команда, а не "stop the music and..."
+	return hit && count <= 3;
 }
 
 
@@ -65,6 +65,13 @@ while(1){
 		std::cout<<">End!!"<<std::endl;
 		speak("Jarvis is end his work,goodbye");
 		break;
+	}
+	if(needsScreen(input)){
+		std::cout<<">Looking at your screen..."<<std::endl;
+		std::string answer = askAboutScreen(input);
+		std::cout<<">Jarvis: "<<answer<<std::endl;
+		speak(answer);
+		continue;
 	}
 
 

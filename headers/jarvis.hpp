@@ -12,6 +12,7 @@
 #include "jarvisOpening.hpp"
 #include "jarvisWorkingWithFiles.hpp"
 #include "jarvisVoiceInput.hpp"
+#include "jarvisScreen.hpp"
 #include <cmath>
 #include <cstdint>
 #include <deque>
